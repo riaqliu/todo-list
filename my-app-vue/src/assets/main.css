@@ -1,0 +1,10 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    /* background-color: #e2ffdf; */
+    background-image: linear-gradient(to bottom right, #fcba03, #e2ffdf);
+    font-family: Arial, Helvetica, sans-serif;
+  }
