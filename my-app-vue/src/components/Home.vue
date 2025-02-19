@@ -1,33 +1,24 @@
 <script>
-    import { mapMutations, mapState } from 'vuex';
+import SignedInMixin from '@/mixins/SignedInMixin';
+import { mapState } from 'vuex';
 
-    export default {
-        name: 'Home',
-        created() {
-            // Get user from local storage
-            const storedUser = localStorage.getItem('user');
-            if (storedUser && !this.user) this.setUser(JSON.parse(storedUser));
+export default {
+    name: 'Home',
 
+    mixins: [SignedInMixin],
 
-            if (!this.user) {
-                console.log("[DEBUG] User Unavailable. Redirecting to Sign-in Page");
-                this.$router.push('/sign-in');
-            }
-        },
-        computed: {
-            ...mapState('Auth', ['user']),
-            username() {
-                return this.user?.username ?? 'Anonymous';
-            }
-        },
-        methods: {
-            ...mapMutations('Auth', ['setUser'])
+    computed: {
+        ...mapState('Auth', ['user']),
+        username() {
+            return this.user?.username ?? 'Anonymous';
         }
     }
+}
 </script>
 <template>
     <div>
         <h1>Welcome {{username}}!</h1>
+        <span><a href="javascript:void(0);" @click="logout()">Log out</a> | <RouterLink to="/todos">Todolist</RouterLink></span>
     </div>
 </template>
 <style scoped>

@@ -1,41 +1,43 @@
 <script>
-    import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
-    export default {
-        name: "SignInComponent",
-        data() {
-            return {
-                username: '',
-                password: '',
-                isAuthenticating: false,
+export default {
+    name: "SignInComponent",
+    data() {
+        return {
+            username: '',
+            password: '',
+            isAuthenticating: false,
+        }
+    },
+
+    computed: {
+        ...mapState('Auth', ['user', 'authError']),
+    },
+
+    methods: {
+        ...mapActions('Auth', ['login']),
+        ...mapMutations('Auth', ['setError']),
+
+        async onSubmit() {
+            this.setError(null);
+            this.isAuthenticating = true;
+
+            const data = {
+                username: this.username,
+                password: this.password
             }
+            await this.login(data);
+            this.clearForm();
+            this.isAuthenticating = false;
         },
-        computed: {
-            ...mapState('Auth', ['user', 'authError']),
-        },
-        methods: {
-            ...mapActions('Auth', ['login']),
-            ...mapMutations('Auth', ['setError']),
 
-            async onSubmit() {
-                this.setError(null);
-                this.isAuthenticating = true;
-
-                const data = {
-                    username: this.username,
-                    password: this.password
-                }
-                await this.login(data);
-                this.clearForm();
-                this.isAuthenticating = false;
-            },
-
-            clearForm() {
-                this.username = '';
-                this.password = '';
-            }
+        clearForm() {
+            this.username = '';
+            this.password = '';
         }
     }
+}
 </script>
 <template>
     <div class="form-body">
