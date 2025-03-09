@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from http import HTTPStatus
-import json
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+
+from http import HTTPStatus
+import json
 
 from .constants import USER_NOT_FOUND, PASSWORD_INCORRECT, LOG_IN_SUCCESSFUL
 
 
+@csrf_exempt
 def SignInView(request):
     request_body = json.loads(request.body)
     username = request_body.get("username")
@@ -26,6 +28,9 @@ def SignInView(request):
         response = {"error": PASSWORD_INCORRECT}
         return JsonResponse(response, status=HTTPStatus.UNAUTHORIZED)
 
+    # Set session
+    # request.session["member_id"] = user.pk
+
     data = {
         "id": user.pk,
         "username": user.username
@@ -33,6 +38,7 @@ def SignInView(request):
 
     response = {
         "message": LOG_IN_SUCCESSFUL,
-        "user": data
+        "user": data,
+        "csrfToken": get_token(request)
     }
     return JsonResponse(response, status=HTTPStatus.OK)

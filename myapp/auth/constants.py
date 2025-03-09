@@ -1,5 +1,3 @@
-from enum import Enum
-
 # Errors
 
 USER_NOT_FOUND = "User does not exist."

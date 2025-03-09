@@ -30,7 +30,12 @@ const actions = {
         try {
             response = await axios.post(`/auth/sign-in`, data);
             commit('setUser', response.user);
+
+            // Set csrfToken header
+            axios.defaults.headers.common['X-CSRFToken'] =  response.csrfToken;
+
             localStorage.setItem('user', JSON.stringify(response.user));
+
             console.log('[Debug]: ', response.message);
             router.push({ name: 'home' });
 
