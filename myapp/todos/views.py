@@ -1,13 +1,11 @@
 from django.http import JsonResponse
 from django.views.generic import View
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 
 from http import HTTPStatus
 import json
 
-from auth.constants import INCOMPLETE_FIELDS, TODO_CREATED_SUCCESS
+from auth.constants import INCOMPLETE_FIELDS, TODO_CREATED_SUCCESS, TODO_DELETED_SUCCESS
 from .models import Todo
 
 
@@ -60,7 +58,11 @@ class TodosView(View):
         return JsonResponse(response, status=HTTPStatus.OK)
 
     def delete(self, request, *args, **kwargs):
-        # todoID = request.DELETE.get("todoID")
+        data = json.loads(request.body)
+        todoID = data.get("todoID")
 
-        print('being deleted', request)
-        return JsonResponse({"message": "yuh"}, status=HTTPStatus.OK)
+        todo = Todo.objects.get(pk=todoID)
+        todo.is_removed = True
+        todo.save()
+
+        return JsonResponse({"message": TODO_DELETED_SUCCESS}, status=HTTPStatus.OK)

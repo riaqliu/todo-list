@@ -79,9 +79,9 @@ export default {
             this.taskItems.push(newTask);
         },
 
-        deleteTask(idx) {
+        deleteTask({taskID, idx}) {
             this.taskItems.splice(idx, 1);
-            this.deleteTodo();
+            this.deleteTodo(taskID);
         },
 
         editTask(taskID) {

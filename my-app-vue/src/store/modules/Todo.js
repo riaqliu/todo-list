@@ -28,9 +28,12 @@ const actions = {
         }
     },
 
-    async deleteTodo() {
+    async deleteTodo(_, idx) {
         try {
-            const response = await axios.delete(`/todos/`, { data: 'lol' });
+            const data = {
+                todoID: idx
+            }
+            const response = await axios.delete(`/todos/`, { data: data });
         } catch(e) {
             console.error(`[Error]:`, e);
         }

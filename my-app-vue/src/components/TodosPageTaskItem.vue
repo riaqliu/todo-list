@@ -31,7 +31,11 @@ export default {
         },
 
         deleteTask() {
-            this.$emit('deleteTask', this.idx);
+            const args = {
+                taskID: this.task.id,
+                idx: this.idx
+            }
+            this.$emit('deleteTask', args);
         },
 
         markAsDone() {
