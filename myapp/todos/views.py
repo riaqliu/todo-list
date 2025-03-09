@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from http import HTTPStatus
 import json
 
-from auth.constants import INCOMPLETE_FIELDS, TODO_CREATED_SUCCESS, TODO_DELETED_SUCCESS
+from auth.constants import INCOMPLETE_FIELDS
+from .constants import TODO_CREATED_SUCCESS, TODO_DELETED_SUCCESS, TODO_UPDATED_SUCCESS
 from .models import Todo
 
 
@@ -13,7 +14,7 @@ from .models import Todo
 class TodosView(View):
     model = Todo
     query_set = Todo.objects.all()
-    http_method_names = ['get', 'post', 'delete']
+    http_method_names = ['get', 'post', 'delete', 'put']
 
     def get(self, request, *args, **kwargs):
         creator_id = request.GET.get("userID")
@@ -66,3 +67,21 @@ class TodosView(View):
         todo.save()
 
         return JsonResponse({"message": TODO_DELETED_SUCCESS}, status=HTTPStatus.OK)
+
+    def put(self, request, *args, **kwargs):
+        data = json.loads(request.body)["data"]
+        todoID = data.get("todoID")
+        updated_title = data.get("updatedTitle", None)
+        updated_is_done = data.get("isDone", None)
+
+        if not updated_title and not updated_is_done:
+            response = {"error": INCOMPLETE_FIELDS}
+            return JsonResponse(response, status=HTTPStatus.BAD_REQUEST)
+
+        todo = Todo.objects.get(pk=todoID)
+        todo.title = updated_title or todo.title
+        todo.is_done = updated_is_done or todo.is_done
+
+        todo.save()
+
+        return JsonResponse({"message": TODO_UPDATED_SUCCESS}, status=HTTPStatus.OK)

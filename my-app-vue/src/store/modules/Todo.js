@@ -37,6 +37,15 @@ const actions = {
         } catch(e) {
             console.error(`[Error]:`, e);
         }
+    },
+
+    async updateTodo(_, args) {
+        try {
+            const response = await axios.put(`/todos/`, { data: {...args} });
+        } catch(e) {
+            console.error(`[Error]:`, e);
+        }
+
     }
 }
 

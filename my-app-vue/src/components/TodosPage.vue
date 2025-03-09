@@ -38,7 +38,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('Todo', ['fetchTodos', 'createTodo', 'deleteTodo']),
+        ...mapActions('Todo', ['fetchTodos', 'createTodo', 'deleteTodo', 'updateTodo']),
         ...mapMutations('Auth', ['setUser']),
 
         async fetchInitialTodos() {
@@ -89,8 +89,19 @@ export default {
             task.isBeingEdited = !task.isBeingEdited;
         },
 
-        editTaskTitle({taskID, editedTitle}) {
+        updateTaskTitle({taskID, editedTitle}) {
             const task = this.getTask(taskID);
+            if (!editedTitle) {
+                task.isBeingEdited = false;
+                return;
+            }
+
+            const arg = {
+                todoID: taskID,
+                updatedTitle: editedTitle
+            };
+            this.updateTodo(arg);
+
             task.title = editedTitle;
             task.isBeingEdited = false;
         },
@@ -126,7 +137,7 @@ export default {
                         :idx="idx"
                         @delete-task="deleteTask($event)"
                         @task-title-clicked="editTask($event)"
-                        @edited-task-title="editTaskTitle($event)"
+                        @edited-task-title="updateTaskTitle($event)"
                         @marked-as-done="markedAsDone($event)"
                         @mouseenter="showButtons(task.id)"
                         @mouseleave="hideButtons(task.id)"
