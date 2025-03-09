@@ -38,7 +38,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('Todo', ['fetchTodos', 'createTodo']),
+        ...mapActions('Todo', ['fetchTodos', 'createTodo', 'deleteTodo']),
         ...mapMutations('Auth', ['setUser']),
 
         async fetchInitialTodos() {
@@ -67,7 +67,7 @@ export default {
         async createNewTask() {
             const newTodo = await this.createTodo();
 
-            console.log('newTodo', newTodo);
+            if (!newTodo) return;
 
             const newTask = {
                 id: newTodo.id,
@@ -81,6 +81,7 @@ export default {
 
         deleteTask(idx) {
             this.taskItems.splice(idx, 1);
+            // this.deleteTodo();
         },
 
         editTask(taskID) {

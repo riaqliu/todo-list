@@ -20,13 +20,13 @@ const actions = {
                 userID: rootGetters['Auth/user'].id,
                 title: 'New Task'
             }
+            console.log('trying to create...');
 
             const response = await axios.post(`/todos/`, { data: data });
             return response["created_todo"];
         } catch(e) {
             console.error(`[Error]:`, e);
         }
-
     }
 }
 

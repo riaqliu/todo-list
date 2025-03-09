@@ -17,9 +17,6 @@ class TodosView(View):
     query_set = Todo.objects.all()
     http_method_names = ['get', 'post', 'delete']
 
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
     def get(self, request, *args, **kwargs):
         creator_id = request.GET.get("userID")
 
@@ -63,5 +60,7 @@ class TodosView(View):
         return JsonResponse(response, status=HTTPStatus.OK)
 
     def delete(self, request, *args, **kwargs):
-        print('being deleted')
+        # todoID = request.DELETE.get("todoID")
+
+        print('being deleted', request)
         return JsonResponse({"message": "yuh"}, status=HTTPStatus.OK)

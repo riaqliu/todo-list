@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from http import HTTPStatus
 import json
@@ -10,6 +11,7 @@ import json
 from .constants import USER_NOT_FOUND, PASSWORD_INCORRECT, LOG_IN_SUCCESSFUL
 
 
+@ensure_csrf_cookie
 @csrf_exempt
 def SignInView(request):
     request_body = json.loads(request.body)

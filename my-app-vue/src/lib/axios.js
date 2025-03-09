@@ -4,6 +4,7 @@ const BASE_URL = "http://localhost:8000"
 
 const instance = axios.create({
     baseURL: BASE_URL,
+    withCredentials: true,
     xsrfCookieName: 'csrftoken',
     xsrfHeaderName: 'X-CSRFToken',
     headers: {
