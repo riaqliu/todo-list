@@ -81,7 +81,7 @@ export default {
 
         deleteTask(idx) {
             this.taskItems.splice(idx, 1);
-            // this.deleteTodo();
+            this.deleteTodo();
         },
 
         editTask(taskID) {

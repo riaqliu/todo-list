@@ -1,6 +1,8 @@
 import axios from "@/lib/axios";
 import router from '@/router';
 
+import getCookie from "@/util";
+
 const state = {
     user: null,
     authError: null
@@ -25,6 +27,13 @@ const mutations = {
 };
 
 const actions = {
+    async sync() {
+
+        // Reset CSRF token from cookie if page reloaded
+        // TODO: find a way to set this at the beginning
+        axios.defaults.headers.common['X-CSRFToken'] =  getCookie('csrftoken');
+    },
+
     async login({ commit }, data) {
         let response;
         try {

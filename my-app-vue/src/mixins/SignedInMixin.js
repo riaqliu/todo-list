@@ -12,9 +12,11 @@ export default {
                 this.logout();
             }
         }
+
+        this.sync();
     },
     methods: {
         ...mapMutations('Auth', ['setUser']),
-        ...mapActions('Auth', ['logout'])
+        ...mapActions('Auth', ['logout', 'sync'])
     }
 }

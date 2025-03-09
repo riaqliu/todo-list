@@ -20,10 +20,17 @@ const actions = {
                 userID: rootGetters['Auth/user'].id,
                 title: 'New Task'
             }
-            console.log('trying to create...');
 
             const response = await axios.post(`/todos/`, { data: data });
             return response["created_todo"];
+        } catch(e) {
+            console.error(`[Error]:`, e);
+        }
+    },
+
+    async deleteTodo() {
+        try {
+            const response = await axios.delete(`/todos/`, { data: 'lol' });
         } catch(e) {
             console.error(`[Error]:`, e);
         }
