@@ -6,9 +6,10 @@ from django.views.generic import View
 from django.contrib.auth.models import User
 from django.core import serializers
 
-from auth.constants import *
+from auth.constants import INCOMPLETE_FIELDS, TODO_CREATED_SUCCESS
 
 import json
+
 
 class TodosView(View):
     model = Todo

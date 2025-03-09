@@ -6,7 +6,8 @@ import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from .constants import *
+from .constants import USER_NOT_FOUND, PASSWORD_INCORRECT, LOG_IN_SUCCESSFUL
+
 
 def SignInView(request):
     request_body = json.loads(request.body)
@@ -15,10 +16,9 @@ def SignInView(request):
 
     try:
         existing_user = User.objects.get(username=username)
-    except:
+    except Exception:
         response = {"error": USER_NOT_FOUND}
         return JsonResponse(response, status=HTTPStatus.NOT_FOUND)
-
 
     user = authenticate(request, username=existing_user.username, password=password)
 
