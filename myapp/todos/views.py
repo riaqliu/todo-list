@@ -31,8 +31,6 @@ class TodosView(View):
         data = json.loads(request.body)["data"]
         creator_id = data.get("userID")
 
-        print('creator_id', data)
-
         if not creator_id:
             response = {"error": INCOMPLETE_FIELDS}
             return JsonResponse(response, status=HTTPStatus.BAD_REQUEST)
@@ -51,7 +49,6 @@ class TodosView(View):
             "is_done": newTodo.is_done
         }
 
-        print('newTodo', newTodo)
         response = {
             "message": TODO_CREATED_SUCCESS,
             "created_todo": created_todo
@@ -74,9 +71,11 @@ class TodosView(View):
         updated_title = data.get("updatedTitle", None)
         updated_is_done = data.get("isDone", None)
 
-        if not updated_title and not updated_is_done:
+        if updated_title is None and updated_is_done is None:
             response = {"error": INCOMPLETE_FIELDS}
             return JsonResponse(response, status=HTTPStatus.BAD_REQUEST)
+
+        print('work?')
 
         todo = Todo.objects.get(pk=todoID)
         todo.title = updated_title or todo.title

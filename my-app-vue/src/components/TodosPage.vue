@@ -96,11 +96,11 @@ export default {
                 return;
             }
 
-            const arg = {
+            const args = {
                 todoID: taskID,
                 updatedTitle: editedTitle
             };
-            this.updateTodo(arg);
+            this.updateTodo(args);
 
             task.title = editedTitle;
             task.isBeingEdited = false;
@@ -108,10 +108,22 @@ export default {
 
         markedAsDone({taskID, isDone}){
             const task = this.getTask(taskID);
+            task.isBeingEdited = false;
+
+            const args = {
+                todoID: taskID,
+                isDone: isDone
+            }
+            this.updateTodo(args);
+
             task.isDone = isDone;
         },
 
-        // UTILITY TASK
+        /**
+         * Gets specific task from saved list of tasks
+         * @param String taskID
+         * @returns task
+         */
         getTask(taskID) {
             return this.taskItems.find(task => task.id === taskID);
         }
